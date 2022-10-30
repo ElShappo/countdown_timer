@@ -1,26 +1,50 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="main">
+    <div class="countdown">Countdown starts from: {{countDown}}</div>
+    <TimerPage class="timerPage" :countDownDate="countDown"/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TimerPage from './components/TimerPage.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TimerPage
+  },
+  data() {
+    return {
+      countDown: new Date(2024, 5, 4, 20, 24),
+    }
   }
 }
 </script>
 
 <style>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.countdown {
+  padding-bottom: 3vh;
+}
+
 </style>
