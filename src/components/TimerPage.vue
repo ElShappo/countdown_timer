@@ -1,10 +1,11 @@
 <template>
 <div v-if="showTimer" class="timer">
-    <div> <span class="name">{{days}}</span> <span class="text-name">days</span> </div>
-    <div> <span class="name">{{hours}}</span> <span class="text-name">hours</span> </div>
-    <div> <span class="name">{{minutes}}</span> <span class="text-name">minutes</span> </div>
-    <div> <span class="name">{{seconds}}</span> <span class="text-name">seconds</span> </div>
+    <div><span class="name">{{days}}</span><span class="text-name"><div>days</div></span></div>
+    <div><span class="name">{{hours}}</span><span class="text-name"><div>hours</div></span></div>
+    <div><span class="name">{{minutes}}</span><span class="text-name"><div>minutes</div></span></div>
+    <div><span class="name">{{seconds}}</span><span class="text-name"><div>seconds</div></span></div>
 </div>
+<div  id="endOfCountdown" v-if="isEndOfCountdown">End of countdown!</div>
 </template>
 
 <script>
@@ -13,12 +14,13 @@ export default {
 
     data() {
         return {
-            days: null,
-            hours: null,
-            minutes: null,
-            seconds: null,
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
 
             showTimer: false,
+            isEndOfCountdown: false,
         }
     },
 
@@ -28,18 +30,21 @@ export default {
 
     methods: {
         startCountdown() {
-            setInterval( () => {
+            let timer = setInterval( () => {
             let now = new Date().getTime();
-            let difference = this.countDownDate.getTime() - now;
+            var difference = this.countDownDate.getTime() - now;
 
-            this.days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            this.hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            this.minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            this.seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
+            if (difference > 0) {
+                this.days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                this.hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                this.minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                this.seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            } else {
+                this.isEndOfCountdown = true;
+                clearInterval(timer);
+            }
             this.showTimer = true;
             }, 1000);
-            
         }
     },
 
@@ -56,12 +61,16 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    column-gap: 1vh;
+    column-gap: 5vh;
 }
 
 .name {
     font-weight: bold;
-    font-size: x-large;
+    font-size: 4vw;
+}
+
+#endOfCountdown {
+    padding-top: 2vh;
 }
 
 </style>
